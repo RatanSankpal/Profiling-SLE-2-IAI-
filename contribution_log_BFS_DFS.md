@@ -7,7 +7,7 @@
 **PRN:** 25UAM080  
 **Course:** 02AML204 — Introduction to Artificial Intelligence
 
-## Student Contribution
+## My Contribution
 
 - Selected the Tic-Tac-Toe problem for the profiling experiment.
 - Decided the board states used for the best/average/worst-case comparison.
@@ -26,13 +26,7 @@ AI assistance was used to:
 - Prepare the updated report, README, and contribution-log structure.
 - Prepare the updated profiling/reporting content.
 
-## Tools Used
 
-- Python
-- `cProfile`
-- `time.perf_counter()`
-- `py-spy` command documented for reproduction on a normal machine
-- AI assistance for code/document restructuring
 
 ## Declaration
 
