@@ -7,12 +7,12 @@ Name: Ratan Ranjeet Sankpal
 This version replaces Minimax/Alpha-Beta with:
 1. DFS - depth-first exhaustive game-tree search with bottom-up minimax backup.
 2. BFS - breadth-first exhaustive game-tree generation followed by bottom-up backup.
+
+Profiling is done externally with py-spy (a sampling profiler) instead of
+cProfile. See the "How to profile with py-spy" section at the bottom.
 """
 
 import time
-import cProfile
-import pstats
-import io
 from collections import deque
 
 WIN_LINES = (
@@ -184,23 +184,20 @@ def run_experiment(board):
           "ms, Nodes:", nodes_bfs)
     print()
 
-def profile_worst_case():
-    """Profile the empty-board BFS/DFS workload using cProfile."""
-    board = [" "] * 9
-    profiler = cProfile.Profile()
-    profiler.enable()
+def worst_case_workload(repeats=200):
+    """
+    Repeatedly solve the empty-board (worst-case) game tree with both
+    DFS and BFS.
 
-    best_move_dfs(board.copy())
-    best_move_bfs(board.copy())
-
-    profiler.disable()
-
-    stream = io.StringIO()
-    stats = pstats.Stats(profiler, stream=stream).sort_stats("cumulative")
-    stats.print_stats(20)
-
-    print("\n===== cProfile Output =====")
-    print(stream.getvalue())
+    A single empty-board solve finishes in well under a second, which is
+    too fast for a sampling profiler like py-spy to catch enough stack
+    samples. Looping it `repeats` times gives py-spy a long-running
+    process to attach to and sample from.
+    """
+    for _ in range(repeats):
+        board = [" "] * 9
+        best_move_dfs(board.copy())
+        best_move_bfs(board.copy())
 
 if __name__ == "__main__":
     test_cases = [
@@ -222,5 +219,38 @@ if __name__ == "__main__":
     for case in test_cases:
         run_experiment(case)
 
-    # Uncomment to generate cProfile output.
-    # profile_worst_case()
+    # Uncomment to run the extended workload that py-spy can sample.
+    # print("Running worst-case workload for py-spy profiling...")
+    # worst_case_workload(repeats=200)
+
+"""
+How to profile with py-spy
+---------------------------
+py-spy is a sampling profiler that runs OUTSIDE your Python process and
+periodically snapshots its call stack, so nothing is imported into the
+script itself.
+
+1. Install it:
+       pip install py-spy
+
+2. Uncomment the `worst_case_workload(repeats=200)` call above (or raise
+   `repeats` further) so the script runs long enough to sample. Adjust
+   `repeats` until the run takes a few seconds.
+
+3. Record a flamegraph while the script runs:
+       py-spy record -o profile.svg -- python tictactoe_bfs_dfs_pyspy.py
+   Open profile.svg in a browser afterward.
+
+4. Or watch live top-like function stats while it runs:
+       py-spy top -- python tictactoe_bfs_dfs_pyspy.py
+
+5. To profile a script that's already running, find its PID and attach:
+       py-spy record -o profile.svg --pid <PID>
+   (On Linux this may need sudo or ptrace permissions.)
+
+py-spy needs no code changes to the functions themselves - it samples
+whatever is on the call stack of the live process, so `dfs_value`,
+`best_move_dfs`, `bfs_value`, and `best_move_bfs` will all show up in
+the flamegraph/top output automatically once the workload runs long
+enough to be sampled.
+"""
