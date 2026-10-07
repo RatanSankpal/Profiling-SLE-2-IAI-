@@ -1,0 +1,31 @@
+# Contribution Log
+
+## Project: Tic Tac Toe AI – BFS and DFS
+
+**Name:** Ratan Ranjeet Sankpal  
+**PRN:** 25UAM080  
+**Course:** 02AML204 – Introduction to Artificial Intelligence
+
+| Sr. No. | Contribution | Contributor |
+|---|---|---|
+| 1 | Designed and developed the Tic Tac Toe game structure | Ratan Ranjeet Sankpal |
+| 2 | Implemented the 3 × 3 game board and move handling | Ratan Ranjeet Sankpal |
+| 3 | Implemented BFS-based AI search | Ratan Ranjeet Sankpal |
+| 4 | Implemented DFS-based AI search with backtracking | Ratan Ranjeet Sankpal |
+| 5 | Implemented win, draw and goal-state checking | Ratan Ranjeet Sankpal |
+| 6 | Tested the game and checked BFS and DFS behaviour | Ratan Ranjeet Sankpal |
+| 7 | Prepared the C4 model and system architecture | Ratan Ranjeet Sankpal |
+| 8 | Prepared project documentation and README | Ratan Ranjeet Sankpal |
+
+## AI Assistance
+
+**AI Tool Used:** Claude (Anthropic)
+
+AI assistance was used for:
+- Drafting C4 diagram layouts
+- Preparing container and component descriptions
+- Improving report and documentation wording
+
+## Personal Contribution
+
+I worked on the implementation, testing, C4 model, system architecture and documentation of the Tic Tac Toe AI project.
